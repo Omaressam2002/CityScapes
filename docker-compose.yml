@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: model_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./shared_data:/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  frontend:
+    build: ./frontend
+    container_name: streamlit_app
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./shared_data:/data
+    depends_on:
+      - backend
